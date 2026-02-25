@@ -15,26 +15,31 @@ public:
         if(!root){
             return {};
         }
-        stack<TreeNode* >s;
-        stack<TreeNode*>st;
-        s.push(root);
+        stack<TreeNode* >st;
         vector<int>ans;
-        while(!s.empty()){
-            TreeNode* temp=s.top();
-            s.pop();
-            st.push(temp);
-            if(temp->left){
-                s.push(temp->left);
+        TreeNode * curr=root;
+        while(curr||!st.empty()){
+            if(curr){
+                st.push(curr);
+                curr=curr->left;
             }
-            if(temp->right){
-                s.push(temp->right);
+            else{
+                TreeNode * right=st.top()->right;
+                if(right==NULL){
+                    TreeNode *temp=st.top();
+                    ans.push_back(temp->val);
+                    st.pop();
+                    while(!st.empty()&&temp==st.top()->right){
+                        temp=st.top();
+                        ans.push_back(temp->val);
+                    st.pop();
+                    }
+                }
+                else{
+                    curr=right;
+                }
             }
-        }
-        while(!st.empty()){
-            ans.push_back(st.top()->val);
-            st.pop();
         }
         return ans;
-        
     }
 };
