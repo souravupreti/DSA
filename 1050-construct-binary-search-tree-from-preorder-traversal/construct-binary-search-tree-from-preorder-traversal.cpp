@@ -11,24 +11,32 @@
  */
 class Solution {
 public:
-    TreeNode * create(int a,TreeNode * root){
-       if(!root){
-        TreeNode * temp=new TreeNode (a);
-        return temp;
-       }
-       if(root->val>a){
-        root->left=create(a,root->left);
-       }
-       else{
-        root->right=create(a,root->right);
-       }
-       return root;
+    // TreeNode * create(int a,TreeNode * root){
+    //    if(!root){
+    //     TreeNode * temp=new TreeNode (a);
+    //     return temp;
+    //    }
+    //    if(root->val>a){
+    //     root->left=create(a,root->left);
+    //    }
+    //    else{
+    //     root->right=create(a,root->right);
+    //    }
+    //    return root;
+    // }
+
+
+    TreeNode * create(vector<int>& preorder,int bound,int &i){
+        if(i==preorder.size()||preorder[i]>bound){
+            return NULL;
+        }
+            TreeNode * temp=new TreeNode (preorder[i++]);
+            temp->left=create(preorder,temp->val,i);
+            temp->right=create(preorder,bound,i);
+            return temp;
     }
     TreeNode* bstFromPreorder(vector<int>& preorder) {
-        TreeNode *root=nullptr;
-         for(int i=0;i<preorder.size();i++){
-           root= create(preorder[i],root);
-        }
-        return root;
+        int i=0;
+        return create(preorder,INT_MAX,i);
     }
 };
