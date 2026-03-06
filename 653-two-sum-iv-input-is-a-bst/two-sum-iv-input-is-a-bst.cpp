@@ -11,33 +11,31 @@
  */
 class Solution {
 public:
-void it(TreeNode *root1,vector<int>&v1){
-      if(!root1){
-          return ;
-      }
-      it(root1->left,v1);
-      v1.push_back(root1->val);
-      it(root1->right,v1);
-      
-  }
-  bool check(vector<int>v,int target){
-    int i=0;int j=v.size()-1;
-    while(i<j){
-        if(v[i]+v[j]==target){
-            return true;
+void inorder(TreeNode * root,vector<int>&r){
+        if(!root){
+            return ;
         }
-        else if(v[i]+v[j]>target){
-            j--;
-        }
-        else{
-            i++;
-        }
+        inorder(root->left,r);
+        r.push_back(root->val);
+        inorder(root->right,r);
+        
     }
-    return false;
-  }
     bool findTarget(TreeNode* root, int k) {
-        vector<int>inn;
-        it(root,inn);
-        return check(inn,k);
+        vector<int>v;
+        inorder(root,v);
+        int l=0;
+        int h=v.size()-1;
+        while(l<h){
+            if(v[l]+v[h]==k){
+                return true;
+            }
+            else if(v[l]+v[h]>k){
+                h--;
+            }
+            else{
+                l++;
+            }
+        }
+        return false;
     }
 };
