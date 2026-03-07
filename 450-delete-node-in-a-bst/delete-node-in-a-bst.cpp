@@ -13,52 +13,50 @@ class Solution {
 public:
     TreeNode* deleteNode(TreeNode* root, int key) {
         if(!root){
-            return nullptr;
+            return NULL;
         }
         if(root->val>key){
-            root->left=deleteNode(root->left,key);
+           root->left=deleteNode (root->left,key);
         }
         else if(root->val<key){
             root->right=deleteNode(root->right,key);
         }
         else{
-            //0 children 
-            if(!root->right&&!root->left){
+            if(!root->left&&!root->right){
                 delete root;
                 return nullptr;
             }
-             //1 children 
-             if(!root->left){
-                TreeNode *temp=root->right;
+            if(root->left&&!root->right){
+                TreeNode * temp=root->left;
                 delete root;
                 return temp;
-             }
-             if(!root->right){
-                TreeNode *temp=root->left;
+            }
+            if(root->right&&!root->left){
+                TreeNode * temp=root->right;
                 delete root;
                 return temp;
-             }
-             //2 children 
-             TreeNode* child=root->left;
-             TreeNode* parent=root;
-             while(child->right){
-                parent=child;
-                child=child->right;
-                
-             }
-             if(parent!=root){
-                parent->right=child->left;
-                child->left=root->left;
-                child->right=root->right;
-                delete root;
-                return child;
-             }
-             else{
-                child->right=root->right;
-                delete root;
-                return child;
-             }
-             
+            }
+            else{
+                TreeNode * parent=root;
+                TreeNode * child=root->left;
+                while(child->right){
+                    parent=child;
+                    child=child->right;
+                }
+                if(root==parent){
+                    child->right=root->right;
+                    delete root;
+                    return child;
+                }
+                else{
+                    parent->right=child->left;
+                    child->left=root->left;
+                    child->right=root->right;
+                    delete root;
+                    return child;
+                }
+            }
+           
         }
         return root;
     }
