@@ -1,48 +1,33 @@
 class Solution {
 public:
-    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-        
-        vector<int> indegree(numCourses, 0);
-        vector<vector<int>> v(numCourses);
-
-        // Build graph correctly: b -> a
-        for(int i = 0; i < prerequisites.size(); i++) {
-            int a = prerequisites[i][0];
-            int b = prerequisites[i][1];
-
-            v[b].push_back(a);      // correct direction
-            indegree[a]++;          // indegree of a increases
+    bool canFinish(int V, vector<vector<int>>& prerequisites) {
+        vector<vector<int>>adj(V);
+        vector<int>indegree(V,0);
+        for(int i=0;i<prerequisites.size();i++){
+            int u=prerequisites[i][0];
+            int v=prerequisites[i][1];
+            
+            adj[v].push_back(u);
+            indegree[u]++;
         }
-
-        queue<int> q;
-
-        for(int i = 0; i < numCourses; i++) {
-            if(indegree[i] == 0) {
+        queue<int>q;
+        for(int i=0;i<V;i++){
+            if(indegree[i]==0){
                 q.push(i);
             }
         }
-
-        vector<int> ans;
-
-        while(!q.empty()) {
-
-            int a = q.front();
+        vector<int>ans;
+        while(!q.empty()){
+            int a=q.front();
             q.pop();
             ans.push_back(a);
-
-            for(int i = 0; i < v[a].size(); i++) {
-
-                indegree[v[a][i]]--;   // first decrease
-
-                if(indegree[v[a][i]] == 0) {
-                    q.push(v[a][i]);
+            for(auto it:adj[a]){
+                indegree[it]--;
+                if(indegree[it]==0){
+                    q.push(it);
                 }
             }
         }
-
-        // If cycle exists, return empty
-        if(ans.size() != numCourses) return false;
-
-        return true;
+        return ans.size() == V; // FIXED
     }
 };
