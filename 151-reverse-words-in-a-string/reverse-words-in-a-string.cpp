@@ -14,12 +14,14 @@ public:
         for(int k=j;k>=i;k--){
             if(k!=j&&s[k+1]==' '&&s[k]==' ')continue;
             if(s[k]==' '){
+                reverse(temp.begin(),temp.end());
                 ans+=temp+' ';
                 temp="";
                 continue;
             }
-            temp=s[k]+temp;
+            temp+=s[k];
         }
+        reverse(temp.begin(),temp.end());
         return ans+temp;
     }
 };
