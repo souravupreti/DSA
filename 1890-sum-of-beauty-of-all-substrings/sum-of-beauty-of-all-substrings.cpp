@@ -4,22 +4,24 @@ public:
         int total = 0;
 
         for(int i = 0; i < s.length(); i++){
-            unordered_map<char,int> u;
+            vector<int> freq(26, 0);
 
             for(int j = i; j < s.length(); j++){
-                u[s[j]]++;
-
-                if(u.size() <= 1) continue;
+                freq[s[j] - 'a']++;
 
                 int maxi = INT_MIN;
                 int mini = INT_MAX;
 
-                for(auto &p : u){
-                    maxi = max(maxi, p.second);
-                    mini = min(mini, p.second);
+                for(int k = 0; k < 26; k++){
+                    if(freq[k] > 0){
+                        maxi = max(maxi, freq[k]);
+                        mini = min(mini, freq[k]);
+                    }
                 }
 
-                total += (maxi - mini);
+                if(maxi != INT_MIN && mini != INT_MAX){
+                    total += (maxi - mini);
+                }
             }
         }
 
